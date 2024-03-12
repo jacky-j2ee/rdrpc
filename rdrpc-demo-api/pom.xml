@@ -8,11 +8,14 @@
 		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>cn.realdev</groupId>
 	<artifactId>rdrpc-demo-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
 	<name>rdrpc-demo-api</name>
 	<description>rdrpc-demo-api</description>
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>

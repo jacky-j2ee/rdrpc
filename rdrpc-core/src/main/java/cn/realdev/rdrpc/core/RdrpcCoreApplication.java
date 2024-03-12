@@ -1,4 +1,4 @@
-package rd.rpc.core;
+package cn.realdev.rdrpc.core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -23,7 +23,8 @@
 
     <modules>
         <module>rdrpc-core</module>
-        <module>rdrpc-demo-api </module>
+        <module>rdrpc-demo-api</module>
+        <module>rdrpc-demo-provider</module>
     </modules>
 
     <dependencies>

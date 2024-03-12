@@ -1,4 +1,4 @@
-package rd.rpc.demo;
+package cn.realdev.rdrpc.demo;
 
 import lombok.Data;
 

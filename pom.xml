@@ -21,40 +21,12 @@
         <java.version>17</java.version>
         <maven.test.skip>true</maven.test.skip>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-    </dependencies>
 
     <modules>
         <module>rdrpc-core</module>
         <module>rdrpc-demo-api</module>
         <module>rdrpc-demo-provider</module>
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cn.realdev</groupId>
-                <artifactId>rdrpc-core</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.realdev</groupId>
-                <artifactId>rdrpc-demo-api</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </dependency>
-
-            <!--<dependency>-->
-            <!--    <groupId>org.projectlombok</groupId>-->
-            <!--    <artifactId>lombok</artifactId>-->
-            <!--    <optional>true</optional>-->
-            <!--</dependency>-->
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>

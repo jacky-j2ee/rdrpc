@@ -1,76 +1,35 @@
 package cn.realdev.rdrpc.demo.provider;
 
-import cn.realdev.rdrpc.core.annotation.RdProvider;
 import cn.realdev.rdrpc.core.api.RpcRequest;
 import cn.realdev.rdrpc.core.api.RpcResponse;
-import jakarta.annotation.PostConstruct;
+import cn.realdev.rdrpc.core.provider.ProviderBootstrap;
+import cn.realdev.rdrpc.core.provider.ProviderConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-@RestController
 @SpringBootApplication
+@RestController
+@Import({ProviderConfig.class})
 public class RdrpcProviderApplication {
+
+    @Autowired
+    private ProviderBootstrap providerBootstrap;
 
     public static void main(String[] args) {
         SpringApplication.run(RdrpcProviderApplication.class, args);
     }
 
     // 使用http + json来时实现序列化和通信
-    public RpcResponse invoke(RpcRequest request) {
-        return invokeRequest(request);
-    }
-
-    private RpcResponse invokeRequest(RpcRequest request) {
-        Object bean = skeleton.get(request.getService());
-        try {
-            Method method = this.findMethod(bean.getClass(), request.getMethod());
-            Object result = method.invoke(bean, request.getArgs());
-            return new RpcResponse(true, result);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Method findMethod(Class<?> aClass, String methodName) throws NoSuchMethodException {
-        for (Method method : aClass.getMethods()) {
-            if (method.getName().equals(methodName)) {
-                return method;
-            }
-        }
-        throw new NoSuchMethodException();
-    }
-
-    @Autowired
-    private ApplicationContext context;
-
-    private Map<String, Object> skeleton = new HashMap<>();
-
-    @PostConstruct
-    public void buildProviders() {
-        Map<String, Object> providers = context.getBeansWithAnnotation(RdProvider.class);
-        providers.forEach((k, v) -> {
-            System.out.println(k);
-        });
-        providers.values().forEach(i -> getInterface(i));
-    }
-
-    private void getInterface(Object i) {
-        Class<?> intf = i.getClass().getInterfaces()[0];
-        skeleton.put(intf.getCanonicalName(), i);
+    @RequestMapping("/")
+    public RpcResponse invoke(@RequestBody RpcRequest request) {
+        return providerBootstrap.invoke(request);
     }
 
     @Bean
@@ -80,7 +39,7 @@ public class RdrpcProviderApplication {
             request.setService("cn.realdev.rdrpc.demo.UserService");
             request.setMethod("findById");
             request.setArgs(new Object[]{100});
-            RpcResponse rpcResponse = invokeRequest(request);
+            RpcResponse rpcResponse = this.invoke(request);
             System.out.println(rpcResponse);
         };
     }

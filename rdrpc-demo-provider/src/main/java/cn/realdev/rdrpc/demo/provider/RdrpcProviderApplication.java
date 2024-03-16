@@ -5,9 +5,11 @@ import cn.realdev.rdrpc.core.api.RpcRequest;
 import cn.realdev.rdrpc.core.api.RpcResponse;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +33,7 @@ public class RdrpcProviderApplication {
     private RpcResponse invokeRequest(RpcRequest request) {
         Object bean = skeleton.get(request.getService());
         try {
-            Method method = bean.getClass().getMethod(request.getMethod());
+            Method method = this.findMethod(bean.getClass(), request.getMethod());
             Object result = method.invoke(bean, request.getArgs());
             return new RpcResponse(true, result);
         } catch (NoSuchMethodException e) {
@@ -41,6 +43,15 @@ public class RdrpcProviderApplication {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Method findMethod(Class<?> aClass, String methodName) throws NoSuchMethodException {
+        for (Method method : aClass.getMethods()) {
+            if (method.getName().equals(methodName)) {
+                return method;
+            }
+        }
+        throw new NoSuchMethodException();
     }
 
     @Autowired
@@ -60,5 +71,17 @@ public class RdrpcProviderApplication {
     private void getInterface(Object i) {
         Class<?> intf = i.getClass().getInterfaces()[0];
         skeleton.put(intf.getCanonicalName(), i);
+    }
+
+    @Bean
+    public ApplicationRunner runner() {
+        return x -> {
+            RpcRequest request = new RpcRequest();
+            request.setService("cn.realdev.rdrpc.demo.UserService");
+            request.setMethod("findById");
+            request.setArgs(new Object[]{100});
+            RpcResponse rpcResponse = invokeRequest(request);
+            System.out.println(rpcResponse);
+        };
     }
 }

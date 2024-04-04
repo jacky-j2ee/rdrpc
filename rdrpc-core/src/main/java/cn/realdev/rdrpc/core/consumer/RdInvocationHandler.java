@@ -2,6 +2,7 @@ package cn.realdev.rdrpc.core.consumer;
 
 import cn.realdev.rdrpc.core.api.RpcRequest;
 import cn.realdev.rdrpc.core.api.RpcResponse;
+import cn.realdev.rdrpc.core.util.MethodUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import okhttp3.*;
@@ -29,14 +30,17 @@ public class  RdInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        String name = method.getName();
-
+        if (MethodUtils.checkLocalMethod(method.getName())) {
+            return null;
+        }
 
         RpcRequest request = new RpcRequest();
         request.setService(service.getCanonicalName());
         request.setMethod(method.getName());
         request.setArgs(args);
+
         RpcResponse rpcResponse = post(request);
+
         if (rpcResponse.isStatus()) {
             if (rpcResponse.getData() instanceof JSONObject) {
                 JSONObject jsonResult = (JSONObject) rpcResponse.getData();

@@ -25,7 +25,7 @@ public class ProviderBootstrap implements ApplicationContextAware {
 
     private Map<String, Object> skeleton = new HashMap<>();
 
-    @PostConstruct
+    @PostConstruct // init-method
     public void buildProviders() {
         Map<String, Object> providers = applicationContext.getBeansWithAnnotation(RdProvider.class);
         providers.forEach((k, v) -> {
@@ -40,26 +40,27 @@ public class ProviderBootstrap implements ApplicationContextAware {
     }
 
     public RpcResponse invoke(RpcRequest request) {
+        RpcResponse rpcResponse = new RpcResponse();
         Object bean = skeleton.get(request.getService());
         try {
             Method method = this.findMethod(bean.getClass(), request.getMethod());
             Object result = method.invoke(bean, request.getArgs());
-            return new RpcResponse(true, result);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            rpcResponse.setStatus(true);
+            rpcResponse.setData(result);
+            return rpcResponse;
+        } catch (Exception e) {
+            rpcResponse.setEx(new RuntimeException(e.getCause().getMessage()));
         }
+        return rpcResponse;
     }
 
-    private Method findMethod(Class<?> aClass, String methodName) throws NoSuchMethodException {
+    private Method findMethod(Class<?> aClass, String methodName) {
         for (Method method : aClass.getMethods()) {
             if (method.getName().equals(methodName)) {
                 return method;
             }
         }
-        throw new NoSuchMethodException();
+        return null;
+        // throw new NoSuchMethodException();
     }
 }

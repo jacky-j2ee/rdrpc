@@ -18,4 +18,6 @@ public class RpcResponse<T> {
      * new User
      */
     T data;
+
+    Exception ex;
 }

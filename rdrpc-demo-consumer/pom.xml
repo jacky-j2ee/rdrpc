@@ -9,23 +9,28 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>rdrpc-core</artifactId>
+	<artifactId>rdrpc-demo-consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
 
-	<name>rdrpc-core</name>
-	<description>rdrpc-core</description>
+	<name>rdrpc-demo-consumer</name>
+	<description>rdrpc-demo-consumer</description>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<groupId>cn.realdev</groupId>
+			<artifactId>rdrpc-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.realdev</groupId>
+			<artifactId>rdrpc-demo-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
@@ -35,15 +40,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>4.12.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.83</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -63,4 +62,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

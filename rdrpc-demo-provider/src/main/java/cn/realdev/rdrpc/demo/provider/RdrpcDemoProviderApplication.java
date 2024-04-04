@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 @Import({ProviderConfig.class})
-public class RdrpcProviderApplication {
+public class RdrpcDemoProviderApplication {
 
     @Autowired
     private ProviderBootstrap providerBootstrap;
 
     public static void main(String[] args) {
-        SpringApplication.run(RdrpcProviderApplication.class, args);
+        SpringApplication.run(RdrpcDemoProviderApplication.class, args);
     }
 
     // 使用http + json来时实现序列化和通信

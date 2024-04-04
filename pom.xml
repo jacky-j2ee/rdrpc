@@ -25,6 +25,7 @@
         <module>rdrpc-core</module>
         <module>rdrpc-demo-api</module>
         <module>rdrpc-demo-provider</module>
+        <module>rdrpc-demo-consumer</module>
     </modules>
 
     <build>

@@ -1,10 +1,10 @@
-package cn.realdev.rdrpc.demo.provider;
+package cn.realdev.rdrpc.demo.consumer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RdrpcProviderApplicationTests {
+class RdrpcDemoConsumerApplicationTests {
 
 	@Test
 	void contextLoads() {
